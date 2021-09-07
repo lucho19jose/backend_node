@@ -1,5 +1,6 @@
 const express = require('express');
 const response = require('../../network/response');
+const controller = require('./controlller')
 var app = express();
 
 app.get('/', (req, res) => {
@@ -13,12 +14,15 @@ app.get('/', (req, res) => {
   response.success(req, res, 'Lista de mensajes')
 })
 
-app.post('/', (req, res) => {
-  if (req.query.error == 'ok') {
-    response.error(req, res, 'Error inesperado', 400, 'Es solo una simulacion de los errores: esto sirve para no enviar datos confidenciales al cliente->solo se tiene en el backend')
-  } else {
-    response.success(req, res, 'Creado correctamente', 201)
+app.post('/', async (req, res) => {
+  const { user, message } = req.body;
+  try {
+    const fullMessage = await controller.addMessage(user, message);
+    response.success(req, res, fullMessage, 201)
+  } catch (error) {
+    response.error(req, res, 'Información invalida', 500, 'Error en el contenido')
   }
+
 });
 
 module.exports = app;
