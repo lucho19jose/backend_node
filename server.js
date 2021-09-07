@@ -23,7 +23,7 @@ app.get('/message', (req, res) => {
 
 app.post('/message', (req, res) => {
   if (req.query.error == 'ok') {
-    response.error(req, res, 'Error simulado', 400)
+    response.error(req, res, 'Error inesperado', 400, 'Es solo una simulacion de los errores: esto sirve para no enviar datos confidenciales al cliente->solo se tiene en el backend')
   } else {
     response.success(req, res, 'Creado correctamente', 201)
   }
