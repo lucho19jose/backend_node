@@ -3,15 +3,16 @@ const response = require('../../network/response');
 const controller = require('./controlller')
 var app = express();
 
-app.get('/', (req, res) => {
-  console.log(req.headers)
-  console.log(req.body)
-  console.log(req.query)
+app.get('/', async (req, res) => {
   res.header({
     "custom-header": "Nuestro valor personalizado",
   });
-  /* res.send('Lista de mensajes ' + req.body.text); */
-  response.success(req, res, 'Lista de mensajes')
+  try {
+    const messageList = await controller.getMessages()
+    response.success(req, res, messageList, 200);
+  } catch (error) {
+    response.error(req, res, 'Unexpected Error', 500, e);
+  }
 })
 
 app.post('/', async (req, res) => {
