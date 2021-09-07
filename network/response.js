@@ -13,3 +13,4 @@ exports.error = function (req, res, message, status, details) {
     body: ''
   })
 }
+
