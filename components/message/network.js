@@ -39,4 +39,13 @@ app.patch('/:id', function (req, res) {
     });
 })
 
+app.delete('/:id', async function (req, res) {
+  await controller.deleteMessage(req.params.id)
+  try {
+    response.success(req, res, `Msg ${req.params.id} eliminado`, 200);
+  } catch (error) {
+    response.error(req, res, 'Error interno', 500, e);
+  }
+})
+
 module.exports = app;
