@@ -4,11 +4,12 @@ const controller = require('./controlller')
 var app = express();
 
 app.get('/', async (req, res) => {
+  const filterMessages = req.query.user || null;
   res.header({
     "custom-header": "Nuestro valor personalizado",
   });
   try {
-    const messageList = await controller.getMessages()
+    const messageList = await controller.getMessages(filterMessages)
     response.success(req, res, messageList, 200);
   } catch (error) {
     response.error(req, res, 'Unexpected Error', 500, e);
