@@ -1,7 +1,22 @@
 const express = require('express');
+const multer = require('multer');
+const path = require('path');
+
 const response = require('../../network/response');
 const controller = require('./controlller')
 var app = express();
+
+//..to save file
+const storage = multer.diskStorage({
+  destination: "uploads/",
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + '.png')
+  }
+})
+
+const upload = multer({
+  storage: storage
+});
 
 app.get('/', async (req, res) => {
   const filterMessages = req.query.user || null;
@@ -16,7 +31,7 @@ app.get('/', async (req, res) => {
   }
 })
 
-app.post('/', async (req, res) => {
+app.post('/', upload.single('file'), async (req, res) => {
   const { chat, user, message } = req.body;
   try {
     const fullMessage = await controller.addMessage(chat, user, message);
