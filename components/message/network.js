@@ -17,9 +17,9 @@ app.get('/', async (req, res) => {
 })
 
 app.post('/', async (req, res) => {
-  const { user, message } = req.body;
+  const { chat, user, message } = req.body;
   try {
-    const fullMessage = await controller.addMessage(user, message);
+    const fullMessage = await controller.addMessage(chat, user, message);
     response.success(req, res, fullMessage, 201)
   } catch (error) {
     response.error(req, res, 'Información invalida', 500, 'Error en el contenido')
