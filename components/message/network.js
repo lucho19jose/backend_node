@@ -8,7 +8,7 @@ var app = express();
 
 //..to save file
 const storage = multer.diskStorage({
-  destination: "uploads/",
+  destination: "public/files/",
   filename: (req, file, cb) => {
     cb(null, Date.now() + '.png')
   }
@@ -34,7 +34,7 @@ app.get('/', async (req, res) => {
 app.post('/', upload.single('file'), async (req, res) => {
   const { chat, user, message } = req.body;
   try {
-    const fullMessage = await controller.addMessage(chat, user, message);
+    const fullMessage = await controller.addMessage(chat, user, message, req.file);
     response.success(req, res, fullMessage, 201)
   } catch (error) {
     response.error(req, res, 'Información invalida', 500, 'Error en el contenido')
